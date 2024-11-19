@@ -9,9 +9,8 @@ export async function fetchPublicKey() {
   );
   const publicKeyPem = await response.text();
   const formated = publicKeyPem
-    .replaceAll("-", "")
-    .replaceAll("BEGIN PUBLIC KEY", "")
-    .replaceAll("END PUBLIC KEY", "")
+    .replace("-----END PUBLIC KEY-----", "")
+    .replace("-----BEGIN PUBLIC KEY-----", "")
     .trim();
 
   const binary = atob(formated);

@@ -12,8 +12,7 @@ const uploadFile = async () => {
     const binaryKey = await fetchPublicKey();
     const publicKeyCrypto = await importKey(binaryKey);
 
-    const chunks = await encryptDoc(file, publicKeyCrypto, 8192);
-    console.log(chunks);
+    await encryptDoc(file, publicKeyCrypto, 128);
   }
 };
 
