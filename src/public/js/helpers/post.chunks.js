@@ -1,7 +1,5 @@
 export const postChunks = async (chunks) => {
-  console.log(chunks);
-
-  const res = await fetch("https://192.168.89.22:8081/docs/upload/chunks", {
+  const res = await fetch("http://localhost:3000/docs/upload/chunks", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -10,4 +8,6 @@ export const postChunks = async (chunks) => {
   });
 
   const data = await res.json();
+
+  return data;
 };

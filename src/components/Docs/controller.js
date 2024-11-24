@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const fs = require("fs");
 
 class DocsController {
   async #base64ToArrayBuffer(base64Array) {
@@ -17,7 +18,7 @@ class DocsController {
 
   async #decryptChunk(chunk, key) {
     try {
-      return crypto.privateDecrypt(
+      const decrypt = await crypto.privateDecrypt(
         {
           key: key,
           padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
@@ -25,32 +26,31 @@ class DocsController {
         },
         Buffer.from(chunk)
       );
+      return decrypt;
     } catch (error) {
       return null;
     }
   }
 
-  #cleanKey(key) {
-    let newKey = key;
-
-    newKey = key
-      .replace("-----BEGIN PRIVATE KEY-----", "")
-      .replace("-----END PRIVATE KEY-----", "")
-      .trim();
-
-    return newKey;
-  }
-
   async handleFile(base64Array, key) {
+    console.log(base64Array);
     const arrayBuffer = await this.#base64ToArrayBuffer(base64Array);
-    const cryptoKey = this.#cleanKey(key);
 
     const chunks = await Promise.all(
       arrayBuffer.map((chunk) => {
-        return this.#decryptChunk(chunk, cryptoKey);
+        return this.#decryptChunk(chunk, key);
       })
     );
-    console.log(chunks);
+
+    const filterchunks = chunks.filter((c) => c !== null);
+    const combinedBuffer = Buffer.concat(filterchunks);
+
+    const outputFilePath = `src/output/${crypto.randomUUID()}.docx`;
+    fs.writeFileSync(outputFilePath, combinedBuffer);
+
+    return {
+      message: "File handled successfully",
+    };
   }
 }
 

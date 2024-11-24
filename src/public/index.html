@@ -10,14 +10,5 @@
     <button type="button" id="confirm-button">Confirm</button>
 
     <script type="module" src="js/main.js"></script>
-
-    <script>
-      async function bufferToText(buffer) {
-        const bufferByLength = buffer.byteLength;
-        const bufferUint8Array = new Uint8Array(buffer, 0, bufferByLength);
-
-        return new TextDecoder().decode(bufferUint8Array);
-      }
-    </script>
   </body>
 </html>

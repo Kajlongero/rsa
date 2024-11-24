@@ -21,9 +21,11 @@ router.post("/upload/chunks", async (req, res, next) => {
   try {
     const body = req.body;
 
-    await docsInstance.handleFile(body, privatekey);
+    console.log(body[0].length);
 
-    res.status(200).json({ message: "okay" });
+    const response = await docsInstance.handleFile(body, privatekey);
+
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }

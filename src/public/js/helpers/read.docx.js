@@ -37,7 +37,6 @@ export const encryptDoc = async (file, publicKey, blockSize = 8192) => {
 
     try {
       const res = await postChunks(chunks);
-
       console.log(res);
     } catch (error) {
       console.log(error);
